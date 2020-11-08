@@ -12,7 +12,7 @@ playground: playground.o growthFunctions.o
 oscillGrowth.o: oscillGrowth.cpp growthFunctions.h
 	$(CXX) $(CXXFLAGS) -c oscillGrowth.cpp
 
-growthFunctions.o: oscillGrowth.cpp growthFunctions.h
+growthFunctions.o: growthFunctions.h
 
 playground.o: playground.cpp growthFunctions.h
 	$(CXX) $(CXXFLAGS) -c playground.cpp

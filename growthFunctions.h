@@ -15,9 +15,22 @@ typedef struct{
     int recoveryTime;
 } Agent;
 
+class Community{
+
+	public:
+	Community(int numberOfCommunities);
+	std::vector<std::vector<Agent> > communityList;
+	void updateConnections(double mu);
+	void updateAgentConnectionList(int currentGroup,std::vector<int> newDivisions);
+
+	private:
+
+};
+
 std::vector<int> basicInfectionStep(std::vector<Agent>& inAgents,int time,boost::mt19937& generator);
 
-std::vector<int> testDivisions(double mu);
+std::vector<int> testDivisions(double mu, int agentListLength);
+
 
 
 #endif
