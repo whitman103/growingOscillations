@@ -78,25 +78,40 @@ void Community::updateAgentConnectionList(int currentGroup, vector<int> newDivis
 
 vector<int> basicInfectionStep(vector<Agent>& agentList, int time, boost::mt19937& generator){
     vector<int> currentStateCount(3,0);
-    double infectionProb(0.1);
+    double infectionProb(0.05);
     for(int i=0;i<(int)agentList.size();i++){
         currentStateCount[agentList[i].state]++;
-        if(agentList[i].state==1){
-            if(time>agentList[i].recoveryTime){
-                agentList[i].state=2;
-            }
-            else{
-                for(int j=0;j<(int)agentList[i].connections.size();j++){
-                    int infectionTarget=get<0>(agentList[i].connections[j]);
-                    if(agentList[infectionTarget].state==0){
-                        if(randPull(generator)<infectionProb){
-                            agentList[infectionTarget].state=1;
-                            agentList[infectionTarget].recoveryTime=time+1+randSite(generator,8);
-                        }
-                    }
-                }
-            }
-        }
+		switch(agentList[i].state){
+			case 1:
+			{
+				if(time>agentList[i].recoveryTime){
+               		agentList[i].state=2;
+					//agentList[i].resusTime=time+90+randSite(generator,30);
+					//agentList[i].resusTime=4000;
+            	}
+				else{
+					for(int j=0;j<(int)agentList[i].connections.size();j++){
+						int infectionTarget=get<0>(agentList[i].connections[j]);
+						if(agentList[infectionTarget].state==0){
+							if(randPull(generator)<infectionProb){
+								agentList[infectionTarget].state=1;
+								agentList[infectionTarget].recoveryTime=time+1+randSite(generator,14);
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 2:
+			{
+			/*if(agentList[i].resusTime<time){
+					agentList[i].state=0;
+				}*/
+			}
+			break;
+			default:
+			break;
+		}
     }
     return currentStateCount;
 }

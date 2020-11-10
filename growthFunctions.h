@@ -13,6 +13,7 @@ typedef struct{
     std::vector<std::tuple<int,double> > connections;
     int state;
     int recoveryTime;
+	int resusTime;
 } Agent;
 
 class Community{

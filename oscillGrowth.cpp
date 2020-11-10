@@ -16,33 +16,44 @@ int main(){
     generator.seed(time(NULL));
 
 	
+	vector<string> plotBases={"Base","Slow","Medium","Fast"};
+	vector<double> muDivisors={3000.,60.,45.,25};
+	int numOfSimulations(plotBases.size());
 
-	Community firstCommunity(7);
-
-    int time(0);
+	for(int sim=0;sim<numOfSimulations;sim++){
 
 
-    ofstream outPlot("SIRPlotBase.txt");
+		Community firstCommunity(7);
 
-    int numOfStates(3);
+		
 
-    do{
-		vector<int> currentStateCount(3,0);
-		for(int i=0;i<(int)firstCommunity.communityList.size();i++){
-			vector<int> communityStateCount=basicInfectionStep(firstCommunity.communityList[i],time,generator);
-			transform(currentStateCount.begin(),currentStateCount.end(),communityStateCount.begin(),currentStateCount.begin(),plus<int>());
-		}
 
-        //firstCommunity.updateConnections(2+time/30.);
+		ofstream outPlot("SIRPlot"+plotBases[sim]+".txt");
+		
 
-        outPlot<<time<<" ";
-        for(int i=0;i<(int)currentStateCount.size();i++){
-            outPlot<<currentStateCount[i]<<" ";
-        }
-        outPlot<<endl;
-        time++;
-    }while(time<100);
+		int numOfStates(3);
+		int time(0);
+		do{
+			vector<int> currentStateCount(3,0);
+			for(int i=0;i<(int)firstCommunity.communityList.size();i++){
+				vector<int> communityStateCount=basicInfectionStep(firstCommunity.communityList[i],time,generator);
+				transform(currentStateCount.begin(),currentStateCount.end(),communityStateCount.begin(),currentStateCount.begin(),plus<int>());
+			}
 
-    outPlot.close();
+			if(time<100){
+				firstCommunity.updateConnections(2.+(double)time/muDivisors[sim]);
+			}
+
+			outPlot<<time<<" ";
+			for(int i=0;i<(int)currentStateCount.size();i++){
+				outPlot<<currentStateCount[i]<<" ";
+			}
+			outPlot<<endl;
+			time++;
+		}while(time<150);
+
+		outPlot.close();
+
+	}
     return 0;
 }
